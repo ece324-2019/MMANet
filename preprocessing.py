@@ -20,7 +20,7 @@ random.seed(420)
 min_max_scaler = preprocessing.MinMaxScaler()
 
 #File names:
-data_file = './datafinal.csv'
+data_file = '.data/datafinal.csv'
 
 #Loading Data
 data = pd.read_csv(data_file,index_col = None)

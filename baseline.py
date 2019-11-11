@@ -22,9 +22,9 @@ torch.manual_seed(420)
 random.seed(420)
 
 #File names:
-train_file = './train.csv'
-valid_file = './valid.csv'
-test_file = './test.csv'
+train_file = '.data/train.csv'
+valid_file = '.data/valid.csv'
+test_file = '.data/test.csv'
 
 #Loading data:
 train_data = pd.read_csv(train_file,index_col = None)
