@@ -1,7 +1,7 @@
 '''
 Script for Preprocessing,
 Normalizes each column,
-Splits data 90/10/10 Training,Validation and Testing
+Splits data 80/10/10 Training,Validation and Testing
 '''
 
 import seaborn as sns
@@ -29,7 +29,7 @@ data = pd.read_csv(data_file,index_col = None)
 data = data.sample( frac = 1).reset_index(drop=True)
 data = pd.DataFrame( min_max_scaler.fit_transform(data), columns = data.columns, index = data.index)
 
-#Splitting the Data (90-10-10)
+#Splitting the Data (80-10-10)
 tot_n = data.shape[0]/2
 win_df = data[data['Winner'] == 1]
 lose_df = data[data['Winner'] == 0]
