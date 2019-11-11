@@ -14,6 +14,9 @@ from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.decomposition import PCA
+from sklearn.neighbors import KNeighborsClassifier
 import torch
 import random
 
@@ -36,6 +39,10 @@ test_data = pd.read_csv(test_file, index_col = None)
 
 if __name__ == '__main__':
 
+    #Make PCA model
+    ''' Ok I don't think we are high dim enough for PCA '''
+    #pca = PCA(n_components = 12, svd_solver = 'auto')  #n<components < sqrt(157 = tot # of features)
+
     #Splitting Labels and features
     train_x = train_data.to_numpy()[:,1:]
     train_y = train_data.to_numpy()[:,0]
@@ -45,18 +52,27 @@ if __name__ == '__main__':
 
     test_x = test_data.to_numpy()[:,1:]
     test_y = test_data.to_numpy()[:,0]
-    
+
+    '''
+    train_x = pca.fit_transform(train_x)
+    valid_x = pca.fit_transform(valid_x)
+    test_x = pca.fit_transform(test_x)
+    '''
+
     #Creating classifier objects:
     svm = SVC(gamma = 'auto')
     logit = LogisticRegression(solver = 'lbfgs')
+    bigtree = DecisionTreeClassifier(max_depth = 1, splitter = 'random')
     forest = RandomForestClassifier(n_estimators = 100, max_depth = None, min_samples_split = 2) 
-    ada = AdaBoostClassifier(n_estimators = 50, learning_rate = 1)
+    ada = AdaBoostClassifier(base_estimator = None, n_estimators = 50, learning_rate = 1)
+    neigh = KNeighborsClassifier(n_neighbors = 3)
 
     #Training the classifiers:
     svm.fit(train_x,train_y)
     logit.fit(train_x,train_y)
     forest.fit(train_x,train_y)
     ada.fit(train_x, train_y)
+    neigh.fit(train_x,train_y)
 
     #Evaluating (Validation):
     #Do cross validation later?
@@ -64,16 +80,19 @@ if __name__ == '__main__':
     y_l_pred = logit.predict(valid_x)
     forest_pred = forest.predict(valid_x)
     ada_pred = ada.predict(valid_x)
-
+    neigh_pred = neigh.predict(valid_x)
+    
     v_accuracy = accuracy_score(valid_y,y_pred)
     logit_accuracy = accuracy_score(valid_y,y_l_pred)
     forest_accuracy = accuracy_score(valid_y, forest_pred)
     ada_accuracy = accuracy_score(valid_y, ada_pred)
+    neigh_accuracy = accuracy_score(valid_y, neigh_pred)
 
     print('Validation Accuracy SVM:',v_accuracy)
     print('Validation Accuracy Logit',logit_accuracy)
     print('Validation Accuracy Forest:', forest_accuracy)
-    print('Boosted Validation Accuract:', ada_accuracy)
+    print('Boosted Validation Accuracy:', ada_accuracy)
+    print('Neighbors Validation Accuracy:', neigh_accuracy)
     
     '''
     #Evaluating (Testing):
