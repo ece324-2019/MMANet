@@ -1,3 +1,9 @@
+'''
+Script for Preprocessing,
+Normalizes each column,
+Splits data 90/10/10 Training,Validation and Testing
+'''
+
 import seaborn as sns
 import pandas as pd
 import numpy as np
@@ -15,14 +21,15 @@ min_max_scaler = preprocessing.MinMaxScaler()
 
 #File names:
 data_file = './datafinal.csv'
-preprocessed_file = './preprocessed_data.csv'
-raw_fighter_file = './raw_fighter_details.csv'
-raw_fight_file = './raw_total_fight_data.csv'
 
+#Loading Data
 data = pd.read_csv(data_file,index_col = None)
+
+#Shuffling and normalizing columns
 data = data.sample( frac = 1).reset_index(drop=True)
 data = pd.DataFrame( min_max_scaler.fit_transform(data), columns = data.columns, index = data.index)
 
+#Splitting the Data (90-10-10)
 tot_n = data.shape[0]/2
 win_df = data[data['Winner'] == 1]
 lose_df = data[data['Winner'] == 0]
@@ -49,6 +56,7 @@ print('For the Training set: \n', train_df['Winner'].value_counts())
 print('For the Validation set: \n', valid_df['Winner'].value_counts())
 print('For the Testing set: \n', test_df['Winner'].value_counts())
 
+#Saving the datasets
 train_df.to_csv('train.csv',index = False)
 valid_df.to_csv('valid.csv', index = False)
 test_df.to_csv('test.csv', index = False)

@@ -1,3 +1,11 @@
+'''
+Code for training and evaluating baseline(s)
+Did SVM, Logit, Random Forest and AdaBoost using decision trees
+Oops got carried away
+Shoutout to sci-kit learn
+'''
+
+
 import seaborn as sns
 import pandas as pd
 import numpy as np
@@ -18,6 +26,7 @@ train_file = './train.csv'
 valid_file = './valid.csv'
 test_file = './test.csv'
 
+#Loading data:
 train_data = pd.read_csv(train_file,index_col = None)
 valid_data = pd.read_csv(valid_file, index_col = None)
 test_data = pd.read_csv(test_file, index_col = None)
@@ -26,6 +35,8 @@ test_data = pd.read_csv(test_file, index_col = None)
 
 
 if __name__ == '__main__':
+
+    #Splitting Labels and features
     train_x = train_data.to_numpy()[:,1:]
     train_y = train_data.to_numpy()[:,0]
 
@@ -34,17 +45,21 @@ if __name__ == '__main__':
 
     test_x = test_data.to_numpy()[:,1:]
     test_y = test_data.to_numpy()[:,0]
-
+    
+    #Creating classifier objects:
     svm = SVC(gamma = 'auto')
     logit = LogisticRegression(solver = 'lbfgs')
     forest = RandomForestClassifier(n_estimators = 100, max_depth = None, min_samples_split = 2) 
     ada = AdaBoostClassifier(n_estimators = 50, learning_rate = 1)
 
+    #Training the classifiers:
     svm.fit(train_x,train_y)
     logit.fit(train_x,train_y)
     forest.fit(train_x,train_y)
     ada.fit(train_x, train_y)
-    print('svm done')
+
+    #Evaluating (Validation):
+    #Do cross validation later?
     y_pred = svm.predict(valid_x)
     y_l_pred = logit.predict(valid_x)
     forest_pred = forest.predict(valid_x)
@@ -59,7 +74,9 @@ if __name__ == '__main__':
     print('Validation Accuracy Logit',logit_accuracy)
     print('Validation Accuracy Forest:', forest_accuracy)
     print('Boosted Validation Accuract:', ada_accuracy)
-
+    
+    '''
+    #Evaluating (Testing):
     y_pred = svm.predict(test_x)
     y_l_pred = logit.predict(test_x)
     forest_pred = forest.predict(test_x)
@@ -74,5 +91,5 @@ if __name__ == '__main__':
     print('Test Accuracy Logit',logit_accuracy)
     print('Test Accuracy Forest:', forest_accuracy)
     print('Boosted Test Accuracy:', ada_accuracy)
-
+    '''
     
