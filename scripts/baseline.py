@@ -29,6 +29,18 @@ train_file = '../data/train.csv'
 valid_file = '../data/valid.csv'
 test_file = '../data/test.csv'
 
+'''
+Zero mean unit Variance does not work as well I do not recommend.
+Makes sense since our values are all positive naturally and our labels are between 0 and 1
+'''
+
+'''
+#Zero-mean data:
+train_file = '../data/train_0mean.csv'
+valid_file = '../data/valid_0mean.csv'
+test_file = '../data/test_0mean.csv'
+'''
+
 #Loading data:
 train_data = pd.read_csv(train_file,index_col = None)
 valid_data = pd.read_csv(valid_file, index_col = None)
