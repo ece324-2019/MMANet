@@ -41,7 +41,7 @@ data_red_to_blue_final = pd.concat([win_data, blue_stats, red_stats, blue_age,
 data_red_to_blue_final.columns = list(data_red_final.columns)
 data_final = pd.concat([data_blue, data_red_to_blue_final, data_red_final],
                        axis=0)
-# Change all occurences of "Red" to 1 and "Blue" as 0
+# Change all occurrences of "Red" to 1 and "Blue" as 0
 data_final.loc[:, "Winner"] = (data_final["Winner"] == "Red").astype(int)
 data_final = data_final.sample(frac=1, random_state=420).reset_index(drop=True)
 data_final.to_csv("data_final.csv", index=False)

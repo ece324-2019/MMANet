@@ -4,80 +4,84 @@ Only did train-valid split, no testing
 '''
 
 import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
 import torch
 from time import time
-from models import *
 import argparse
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
+from models import Net, FightDataset
 
 
 def main(args):
     torch.manual_seed(420)
-    data = pd.read_csv("datafinal.csv")
+    data = pd.read_csv("../data/datafinal.csv")
     label = data["Winner"].copy()
     data = data.drop(columns=['Winner'])
-    datanp = data.to_numpy()
-    labelnp = label.to_numpy()
-    x_train, x_test, y_train, y_test = train_test_split(datanp, labelnp, test_size=0.1)
-    
-    traindata = FightDataset(x_train, y_train)
-    testdata = FightDataset(x_test, y_test)
-    
-    train_loader = DataLoader(traindata, batch_size=args.batch_size, shuffle=True)
-    val_loader = DataLoader(testdata, batch_size=len(x_test), shuffle=True)
-    
+    data_np = data.to_numpy()
+    label_np = label.to_numpy()
+    x_train, x_test, y_train, y_test = train_test_split(data_np, label_np,
+                                                        test_size=0.1)
+
+    train_data = FightDataset(x_train, y_train)
+    test_data = FightDataset(x_test, y_test)
+
+    train_loader = DataLoader(train_data, batch_size=args.batch_size,
+                              shuffle=True)
+    val_loader = DataLoader(test_data, batch_size=len(x_test), shuffle=True)
+
     model = Net()
     loss_function = torch.nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
-    
-    taccuracystore = []
-    vaccuracystore = []
-    tlossstore = []
-    vlossstore = []
-    tacc = 0
-    vacc = 0
+
+    t_accuracystore = []
+    v_accuracystore = []
+    t_lossstore = []
+    v_lossstore = []
+    t_acc = 0
+    v_acc = 0
     t = time()
     for i in range(args.epochs):
-        tacc = 0
+        t_acc = 0
 
         for j, d in enumerate(train_loader, 0):
 
             inputs, label = d
             optimizer.zero_grad()
             predict = model(inputs.float())
-            tloss = loss_function(input=predict.squeeze(), target=label.float())
-            tloss.backward()
+            t_loss = loss_function(input=predict.squeeze(),
+                                   target=label.float())
+            t_loss.backward()
             optimizer.step()
-            
+
             # Evaluating training accuracy
             for k in range(len(label)):
                 if round(predict[k].item()) == label[k]:
-                    tacc += 1
+                    t_acc += 1
 
-        vacc = 0
+        v_acc = 0
         # Evaluating validation accuracy
         for j, d in enumerate(val_loader, 0):
             inputs, label = d
             predict = model(inputs.float())
-            vloss = loss_function(input=predict.squeeze(), target=label.float())
+            v_loss = loss_function(input=predict.squeeze(),
+                                   target=label.float())
             for k in range(len(label)):
                 if round(predict[k].item()) == label[k]:
-                    vacc += 1
-        taccuracystore.append(tacc/len(traindata))
-        vaccuracystore.append(vacc/len(testdata))
-        tlossstore.append(tloss)
-        vlossstore.append(vloss)
-        print(vacc/len(testdata))
-    
+                    v_acc += 1
+        t_accuracystore.append(t_acc / len(train_data))
+        v_accuracystore.append(v_acc / len(test_data))
+        t_lossstore.append(t_loss)
+        v_lossstore.append(v_loss)
+        print(v_acc / len(test_data))
+
     elapsed = time() - t
     print(elapsed)
-    
+
     # Plotting accuracies for training and validation
-    epochstore = range(len(taccuracystore))
-    plt.plot(epochstore, taccuracystore, label='Train')
-    plt.plot(epochstore, vaccuracystore, label='Validation')
+    epoch_store = range(len(t_accuracystore))
+    plt.plot(epoch_store, t_accuracystore, label='Train')
+    plt.plot(epoch_store, v_accuracystore, label='Validation')
     plt.title("Accuracy over Batches")
     plt.legend(['Training', 'Validation'])
     plt.xlabel('Batch #')
