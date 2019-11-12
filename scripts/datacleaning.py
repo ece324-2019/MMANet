@@ -1,5 +1,6 @@
 '''
 Code for data cleaning
+Balanced Red and Blue Wins
 '''
 import numpy as np
 import pandas as pd
