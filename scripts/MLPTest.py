@@ -22,7 +22,7 @@ def main(args):
     label_np = label.to_numpy()
     x_train, x_test, y_train, y_test = train_test_split(data_np, label_np,
                                                         test_size=0.1)
-
+    # Splitting and preparing the dataset and dataloader
     train_data = FightDataset(x_train, y_train)
     test_data = FightDataset(x_test, y_test)
 
@@ -34,12 +34,11 @@ def main(args):
     loss_function = torch.nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
 
+    # Initializing the list to hold accuracies and losses
     t_accuracystore = []
     v_accuracystore = []
     t_lossstore = []
     v_lossstore = []
-    t_acc = 0
-    v_acc = 0
     t = time()
     for i in range(args.epochs):
         t_acc = 0
