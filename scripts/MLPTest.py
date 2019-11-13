@@ -40,6 +40,7 @@ def main(args):
     t_lossstore = []
     v_lossstore = []
     t = time()
+
     for i in range(args.epochs):
         t_acc = 0
 
