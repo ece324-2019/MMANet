@@ -1,6 +1,6 @@
 # MMANet
 
-###This repository contains all code,data and images for the MMANet project for ECE324
+This repository contains all code,data and images for the MMANet project for ECE324
 
 ##Details:
 
