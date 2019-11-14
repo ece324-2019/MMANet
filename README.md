@@ -2,7 +2,7 @@
 
 This repository contains all code,data and images for the MMANet project for ECE324
 
-##Details:
+## Details:
 
 Main models are stored in '''scripts/models.py''' and baseline models are stored in '''scripts/baseline.py'''
 
