@@ -15,20 +15,37 @@ from models import Net, FightDataset
 
 def main(args):
     torch.manual_seed(420)
-    data = pd.read_csv("../data/datafinal.csv")
-    label = data["Winner"].copy()
-    data = data.drop(columns=['Winner'])
-    data_np = data.to_numpy()
-    label_np = label.to_numpy()
-    x_train, x_test, y_train, y_test = train_test_split(data_np, label_np,
-                                                        test_size=0.1)
+    # data = pd.read_csv("../data/datafinal.csv")
+    # label = data["Winner"].copy()
+    # data = data.drop(columns=['Winner'])
+    # data_np = data.to_numpy()
+    # label_np = label.to_numpy()
+    # x_train, x_test, y_train, y_test = train_test_split(data_np, label_np,
+    #                                                     test_size=0.1)
     # Splitting and preparing the dataset and dataloader
+
+    train_set = pd.read_csv("../data/train.csv", index_col=None)
+    valid_set = pd.read_csv("../data/valid.csv", index_col=None)
+    test_set = pd.read_csv("../data/test.csv", index_col=None)
+
+    x_train = train_set.to_numpy()[:, 1:]
+    y_train = train_set.to_numpy()[:, 0]
+
+    x_valid = valid_set.to_numpy()[:, 1:]
+    y_valid = valid_set.to_numpy()[:, 0]
+
+    x_test = test_set.to_numpy()[:, 1:]
+    y_test = test_set.to_numpy()[:, 0]
+
     train_data = FightDataset(x_train, y_train)
+    valid_data = FightDataset(x_valid, y_valid)
     test_data = FightDataset(x_test, y_test)
 
     train_loader = DataLoader(train_data, batch_size=args.batch_size,
                               shuffle=True)
-    val_loader = DataLoader(test_data, batch_size=len(x_test), shuffle=True)
+    val_loader = DataLoader(valid_data, batch_size=len(x_valid), shuffle=True)
+    test_loader = DataLoader(test_data, batch_size=len(x_test),
+                              shuffle=True)
 
     model = Net()
     loss_function = torch.nn.MSELoss()
@@ -92,9 +109,9 @@ def main(args):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--seed', type=int, default=1)
-    parser.add_argument('--batch_size', type=int, default=64)
+    parser.add_argument('--batch_size', type=int, default=300)
     parser.add_argument('--lr', type=float, default=0.01)
-    parser.add_argument('--epochs', type=int, default=25)
+    parser.add_argument('--epochs', type=int, default=100)
     args = parser.parse_args()
 
     main(args)
