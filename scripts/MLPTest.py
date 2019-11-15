@@ -45,11 +45,12 @@ def main(args):
                               shuffle=True)
     val_loader = DataLoader(valid_data, batch_size=len(x_valid), shuffle=True)
     test_loader = DataLoader(test_data, batch_size=len(x_test),
-                              shuffle=True)
+                             shuffle=True)
 
     model = Net()
-    loss_function = torch.nn.MSELoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=args.lr)
+    loss_function = torch.nn.BCELoss()
+    optimizer = torch.optim.Adam(model.parameters(),
+                                 lr=args.lr, weight_decay=0.02)
 
     # Initializing the list to hold accuracies and losses
     t_accuracystore = []
@@ -57,7 +58,7 @@ def main(args):
     t_lossstore = []
     v_lossstore = []
     t = time()
-
+    test_acc = 0
     for i in range(args.epochs):
         t_acc = 0
 
@@ -87,13 +88,23 @@ def main(args):
                 if round(predict[k].item()) == label[k]:
                     v_acc += 1
         t_accuracystore.append(t_acc / len(train_data))
-        v_accuracystore.append(v_acc / len(test_data))
+        v_accuracystore.append(v_acc / len(valid_data))
         t_lossstore.append(t_loss)
         v_lossstore.append(v_loss)
-        print(v_acc / len(test_data))
+        print("%5.3f" % (v_acc / len(valid_data)))
+
+    for j, d in enumerate(test_loader, 0):
+        inputs, label = d
+        predict = model(inputs.float())
+        test_loss = loss_function(input=predict.squeeze(),
+                                  target=label.float())
+        for k in range(len(label)):
+            if round(predict[k].item()) == label[k]:
+                test_acc += 1
 
     elapsed = time() - t
     print(elapsed)
+    print(test_acc/len(test_data))
 
     # Plotting accuracies for training and validation
     epoch_store = range(len(t_accuracystore))
@@ -110,8 +121,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--seed', type=int, default=1)
     parser.add_argument('--batch_size', type=int, default=300)
-    parser.add_argument('--lr', type=float, default=0.01)
-    parser.add_argument('--epochs', type=int, default=100)
+    parser.add_argument('--lr', type=float, default=0.001)
+    parser.add_argument('--epochs', type=int, default=20)
     args = parser.parse_args()
 
     main(args)
