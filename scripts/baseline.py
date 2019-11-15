@@ -41,6 +41,13 @@ valid_file = '../data/valid_0mean.csv'
 test_file = '../data/test_0mean.csv'
 '''
 
+'''
+#3 round and 5 round seperated data:
+train_file = '../data/five_round.csv'
+valid_file = '../data/three_round.csv'
+test_file = '../data/test.csv'
+'''
+
 #Loading data:
 train_data = pd.read_csv(train_file,index_col = None)
 valid_data = pd.read_csv(valid_file, index_col = None)

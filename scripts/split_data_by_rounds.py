@@ -75,6 +75,7 @@ five_df = pd.DataFrame(min_max_scaler.fit_transform(five_df), columns = five_df.
 
 three_df = three_df.sample(frac=1).reset_index(drop = True)
 three_df = pd.DataFrame(min_max_scaler.fit_transform(three_df), columns = three_df.columns, index = three_df.index)
+
 #Save
 
 five_df.to_csv('../data/five_round.csv', index = False)
