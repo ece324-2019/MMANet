@@ -29,7 +29,6 @@ def main(args):
 
     x_train = train_set.to_numpy()[:, 1:]
     y_train = train_set.to_numpy()[:, 0]
-
     x_valid = valid_set.to_numpy()[:, 1:]
     y_valid = valid_set.to_numpy()[:, 0]
 
@@ -46,10 +45,10 @@ def main(args):
     test_loader = DataLoader(test_data, batch_size=len(x_test),
                              shuffle=True)
 
-    model = SimpleNet()
+    model = DeepNet()
     loss_function = torch.nn.BCELoss()
     optimizer = torch.optim.Adam(model.parameters(),
-                                 lr=args.lr, weight_decay=0.00)
+                                 lr=args.lr, weight_decay=0.001)
 
     # Initializing the list to hold accuracies and losses
     t_accuracystore = []
@@ -118,10 +117,10 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--seed', type=int, default=418)
-    parser.add_argument('--batch_size', type=int, default=300)
+    parser.add_argument('--seed', type=int, default=420)
+    parser.add_argument('--batch_size', type=int, default=64)
     parser.add_argument('--lr', type=float, default=0.0001)
-    parser.add_argument('--epochs', type=int, default=125)
+    parser.add_argument('--epochs', type=int, default=30)
     args = parser.parse_args()
 
     main(args)
