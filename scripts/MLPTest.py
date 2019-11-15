@@ -1,6 +1,5 @@
 '''
 Wrote a basic training loop for a simple MLP
-Only did train-valid split, no testing
 '''
 
 import pandas as pd
@@ -10,11 +9,11 @@ import argparse
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
 from torch.utils.data import DataLoader
-from models import Net, FightDataset
+from models import DeepNet, SimpleNet, FightDataset
 
 
 def main(args):
-    torch.manual_seed(420)
+    torch.manual_seed(args.seed)
     # data = pd.read_csv("../data/datafinal.csv")
     # label = data["Winner"].copy()
     # data = data.drop(columns=['Winner'])
@@ -47,10 +46,10 @@ def main(args):
     test_loader = DataLoader(test_data, batch_size=len(x_test),
                              shuffle=True)
 
-    model = Net()
+    model = SimpleNet()
     loss_function = torch.nn.BCELoss()
     optimizer = torch.optim.Adam(model.parameters(),
-                                 lr=args.lr, weight_decay=0.02)
+                                 lr=args.lr, weight_decay=0.00)
 
     # Initializing the list to hold accuracies and losses
     t_accuracystore = []
@@ -119,10 +118,10 @@ def main(args):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--seed', type=int, default=1)
+    parser.add_argument('--seed', type=int, default=418)
     parser.add_argument('--batch_size', type=int, default=300)
-    parser.add_argument('--lr', type=float, default=0.001)
-    parser.add_argument('--epochs', type=int, default=20)
+    parser.add_argument('--lr', type=float, default=0.0001)
+    parser.add_argument('--epochs', type=int, default=125)
     args = parser.parse_args()
 
     main(args)

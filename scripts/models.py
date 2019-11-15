@@ -17,9 +17,28 @@ class FightDataset(data.Dataset):
         return [self.X[index, :], self.y[index]]
 
 
-class Net(nn.Module):
+class DeepNet(nn.Module):
     def __init__(self):
-        super(Net, self).__init__()
+        super(DeepNet, self).__init__()
+        self.fc1 = nn.Linear(157, 10)
+        self.fc1_BN = nn.BatchNorm1d(10)
+        self.fc2 = nn.Linear(10, 10)
+        self.fc2_BN = nn.BatchNorm1d(10)
+        self.fc3 = nn.Linear(10, 10)
+        self.fc3_BN = nn.BatchNorm1d(10)
+        self.fc4 = nn.Linear(10, 1)
+
+    def forward(self, x):
+        x = sigmoid(self.fc1_BN(self.fc1(x)))
+        x = sigmoid(self.fc2_BN(self.fc2(x)))
+        x = sigmoid(self.fc3_BN(self.fc3(x)))
+        x = sigmoid(self.fc4(x))
+        return x
+
+
+class SimpleNet(nn.Module):
+    def __init__(self):
+        super(SimpleNet, self).__init__()
         self.fc1 = nn.Linear(157, 10)
         self.fc1_BN = nn.BatchNorm1d(10)
         self.fc2 = nn.Linear(10, 1)
