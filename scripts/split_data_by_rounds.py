@@ -33,8 +33,10 @@ five_df = data[data.no_of_rounds == 5].sort_values('Winner').reset_index(drop = 
 three_df = data[data.no_of_rounds == 3].sort_values('Winner')
 three_df = three_df.iloc[1:,:].reset_index(drop = True)
 
+'''
 five_df.to_csv('../data/unb_5round.csv')
 three_df.to_csv('../data/unb_3round.csv')
+'''
 
 #Rebalance:
 five_count = five_df.Winner.value_counts()
@@ -77,6 +79,5 @@ three_df = three_df.sample(frac=1).reset_index(drop = True)
 three_df = pd.DataFrame(min_max_scaler.fit_transform(three_df), columns = three_df.columns, index = three_df.index)
 
 #Save
-
 five_df.to_csv('../data/five_round.csv', index = False)
 three_df.to_csv('../data/three_round.csv', index = False)
