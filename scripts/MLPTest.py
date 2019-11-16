@@ -8,6 +8,7 @@ from time import time
 import argparse
 import matplotlib.pyplot as plt
 from sklearn.model_selection import train_test_split
+from torchsummary import summary
 from torch.utils.data import DataLoader
 from models import DeepNet, SimpleNet, FightDataset
 
@@ -50,6 +51,7 @@ def main(args):
     optimizer = torch.optim.Adam(model.parameters(),
                                  lr=args.lr, weight_decay=0.001)
 
+    summary(model, (10, 157))
     # Initializing the list to hold accuracies and losses
     t_accuracystore = []
     v_accuracystore = []
