@@ -51,7 +51,6 @@ def main(args):
     optimizer = torch.optim.Adam(model.parameters(),
                                  lr=args.lr)
 
-    # summary(model, (240, 879))
     # Initializing the list to hold accuracies and losses
     t_accuracystore = []
     v_accuracystore = []
@@ -108,6 +107,8 @@ def main(args):
 
     # Plotting accuracies for training and validation
     epoch_store = range(len(t_accuracystore))
+    loss_store = range(len(t_lossstore))
+
     plt.plot(epoch_store, t_accuracystore, label='Train')
     plt.plot(epoch_store, v_accuracystore, label='Validation')
     plt.title("Accuracy over Batches")
@@ -116,6 +117,13 @@ def main(args):
     plt.ylabel('Accuracy')
     plt.show()
 
+    plt.plot(loss_store, t_lossstore, label='Train')
+    plt.plot(loss_store, v_lossstore, label='Validation')
+    plt.title("Loss over Batches")
+    plt.legend(['Training', 'Validation'])
+    plt.xlabel('Batch #')
+    plt.ylabel('Accuracy')
+    plt.show()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
