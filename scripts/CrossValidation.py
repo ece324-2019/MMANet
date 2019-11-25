@@ -26,7 +26,9 @@ def main(args):
     optimizer = torch.optim.Adam(model.parameters(),
                                  lr=args.lr)
 
-    net = NeuralNetClassifier(model, max_epochs=150, lr=1e-2)
+    net = NeuralNetClassifier(model, #criterion=torch.nn.BCELoss(),
+                              max_epochs=100, # optimizer=torch.optim.Adam,
+                              lr=1e-2)
     scores = cross_val_score(net, data_np, label_np, cv=3, scoring="accuracy")
 
 
