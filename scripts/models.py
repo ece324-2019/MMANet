@@ -32,7 +32,7 @@ class DeepNet(nn.Module):
         x = sigmoid(self.fc1_BN(self.fc1(x)))
         x = sigmoid(self.fc2_BN(self.fc2(x)))
         x = sigmoid(self.fc3_BN(self.fc3(x)))
-        x = sigmoid(self.fc4(x))
+        x = self.fc4(x)
         return x
 
 

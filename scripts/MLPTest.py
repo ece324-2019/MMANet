@@ -47,7 +47,7 @@ def main(args):
                              shuffle=True)
 
     model = DeepNet()
-    loss_function = torch.nn.BCELoss()
+    loss_function = torch.nn.BCEWithLogitsLoss()
     optimizer = torch.optim.Adam(model.parameters(),
                                  lr=args.lr, weight_decay=0.001)
 
@@ -74,7 +74,8 @@ def main(args):
 
             # Evaluating training accuracy
             for k in range(len(label)):
-                if round(predict[k].item()) == label[k]:
+                predictsig = torch.sigmoid(predict)
+                if round(predictsig[k].item()) == label[k]:
                     t_acc += 1
 
         v_acc = 0
@@ -85,7 +86,8 @@ def main(args):
             v_loss = loss_function(input=predict.squeeze(),
                                    target=label.float())
             for k in range(len(label)):
-                if round(predict[k].item()) == label[k]:
+                predictsig = torch.sigmoid(predict)
+                if round(predictsig[k].item()) == label[k]:
                     v_acc += 1
         t_accuracystore.append(t_acc / len(train_data))
         v_accuracystore.append(v_acc / len(valid_data))
@@ -99,7 +101,8 @@ def main(args):
         test_loss = loss_function(input=predict.squeeze(),
                                   target=label.float())
         for k in range(len(label)):
-            if round(predict[k].item()) == label[k]:
+            predictsig = torch.sigmoid(predict)
+            if round(predictsig[k].item()) == label[k]:
                 test_acc += 1
 
     elapsed = time() - t
