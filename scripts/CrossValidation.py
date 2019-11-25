@@ -1,13 +1,12 @@
 '''
 Wrote a basic training loop for a simple MLP
 '''
-
 import pandas as pd
 import torch
 import argparse
-from sklearn.model_selection import train_test_split
 import numpy as np
-from models import DeepNet, SimpleNet, FightDataset
+from sklearn.model_selection import train_test_split
+from models import *
 from skorch import NeuralNetClassifier
 from sklearn.model_selection import cross_val_score
 
@@ -21,14 +20,15 @@ def main(args):
     label_np = label.to_numpy(dtype=np.int64)
     x_train, x_test, y_train, y_test = train_test_split(data_np, label_np,
                                                         test_size=0.1)
-    model = DeepNet()
+
+    model = DeepNetCross()
     loss_function = torch.nn.BCELoss()
     optimizer = torch.optim.Adam(model.parameters(),
-                                 lr=args.lr, weight_decay=0.001)
-    print(data_np.shape, label_np.shape)
-    logistic = NeuralNetClassifier(model, max_epochs=20, lr=1e-3)
-    scores = cross_val_score(logistic, data_np, label_np, cv=3,
-                             scoring="accuracy")
+                                 lr=args.lr)
+
+    net = NeuralNetClassifier(model, max_epochs=150, lr=1e-2)
+    scores = cross_val_score(net, data_np, label_np, cv=3, scoring="accuracy")
+
 
 
 if __name__ == '__main__':
