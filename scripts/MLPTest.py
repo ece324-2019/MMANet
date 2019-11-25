@@ -61,7 +61,7 @@ def main(args):
     test_acc = 0
     for i in range(args.epochs):
         t_acc = 0
-
+        model.train()
         for j, d in enumerate(train_loader, 0):
 
             inputs, label = d
@@ -79,6 +79,7 @@ def main(args):
                     t_acc += 1
 
         v_acc = 0
+        model.eval()
         # Evaluating validation accuracy
         for j, d in enumerate(val_loader, 0):
             inputs, label = d
@@ -128,7 +129,7 @@ def main(args):
     plt.xlabel('Batch #')
     plt.ylabel('Accuracy')
     plt.show()
-    torch.save(model.state_dict(), "model.pt")
+    torch.save(model, "model.pt")
 
 
 if __name__ == '__main__':

@@ -60,7 +60,7 @@ def main(args):
     test_acc = 0
     for i in range(args.epochs):
         t_acc = 0
-
+        model.train()
         for j, d in enumerate(train_loader, 0):
 
             inputs, label = d
@@ -78,6 +78,7 @@ def main(args):
 
         v_acc = 0
         # Evaluating validation accuracy
+        model.eval()
         for j, d in enumerate(val_loader, 0):
             inputs, label = d
             predict = model(inputs.float())
