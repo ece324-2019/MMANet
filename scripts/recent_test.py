@@ -25,6 +25,7 @@ model.eval()
 predict = model(features.float())
 predictsig = torch.sigmoid(predict)
 acc = 0
+
 for k in range(len(label)):
     if round(predictsig[k].item()) == label[k]:
         acc += 1
