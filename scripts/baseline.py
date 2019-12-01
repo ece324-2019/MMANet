@@ -113,7 +113,7 @@ if __name__ == '__main__':
     print('Boosted Validation Accuracy:', ada_accuracy)
     print('Neighbors Validation Accuracy:', neigh_accuracy)
     
-    '''
+    
     #Evaluating (Testing):
     y_pred = svm.predict(test_x)
     y_l_pred = logit.predict(test_x)
@@ -129,5 +129,5 @@ if __name__ == '__main__':
     print('Test Accuracy Logit',logit_accuracy)
     print('Test Accuracy Forest:', forest_accuracy)
     print('Boosted Test Accuracy:', ada_accuracy)
-    '''
+    
     

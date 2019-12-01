@@ -3,11 +3,15 @@ Code for training Random Forest baseline
 Incorporates Restricted Boltzmann machine into training
 Shoutout to Hinton for writing: "A Practical Guide to Training Restricted Boltzmann Machines"
 I barely know what I'm doing
+Will probably try VAEs or GANs later for generative but idk if that will help
 '''
 
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.pipeline import Pipeline
+from sklearn.neural_network import BernoulliRBM
+from sklearn.metrics import accuracy_score
 import torch
 import random
 
@@ -55,7 +59,9 @@ if __name__ == '__main__':
     test_y = test_data.to_numpy()[:,0]
 
     #Creating classifier objects:
-    bigtree = DecisionTreeClassifier(max_depth = 1, splitter = 'random')
+    rf = RandomForestClassifier(n_estimators = 80, max_depth = None, min_samples_split = 2)
+    rbm = BernoulliRBM(verbose = True)
+    forest = Pipeline( steps = [('rbm', rbm), ('rf', rf)])
 
     #Training the classifiers:
     forest.fit(train_x,train_y)
