@@ -48,7 +48,7 @@ def main(args):
 
     model = SimpleNet()
     loss_function = torch.nn.BCELoss()
-    optimizer = torch.optim.Adam(model.parameters(),
+    optimizer = torch.optim.SGD(model.parameters(),
                                  lr=args.lr)
 
     # Initializing the list to hold accuracies and losses
@@ -130,8 +130,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--seed', type=int, default=420)
     parser.add_argument('--batch_size', type=int, default=32)
-    parser.add_argument('--lr', type=float, default=0.0001)
-    parser.add_argument('--epochs', type=int, default=120)
+    parser.add_argument('--lr', type=float, default=0.01)
+    parser.add_argument('--epochs', type=int, default=200)
     args = parser.parse_args()
 
     main(args)
