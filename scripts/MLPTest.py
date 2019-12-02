@@ -94,7 +94,7 @@ def main(args):
         v_accuracystore.append(v_acc / len(valid_data))
         t_lossstore.append(t_loss)
         v_lossstore.append(v_loss)
-        print("%5.3f" % (v_acc / len(valid_data)))
+        print("Validation dataset accuracy: %5.3f" % (v_acc / len(valid_data)))
 
     for j, d in enumerate(test_loader, 0):
         inputs, label = d
@@ -107,8 +107,8 @@ def main(args):
                 test_acc += 1
 
     elapsed = time() - t
-    print(elapsed)
-    print(test_acc/len(test_data))
+    # print(elapsed)
+    print("Test dataset accuracy: %5.3f" % (test_acc/len(test_data)))
 
     # Plotting accuracies for training and validation
     epoch_store = range(len(t_accuracystore))
