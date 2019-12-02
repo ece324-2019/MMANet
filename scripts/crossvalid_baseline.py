@@ -1,8 +1,5 @@
 '''
-Code for training and evaluating baseline(s)
-Did SVM, Logit, Random Forest and AdaBoost using decision trees
-Oops got carried away
-Shoutout to sci-kit learn
+Cross Validation for the baseline
 '''
 
 
