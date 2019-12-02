@@ -30,6 +30,7 @@ data = pd.read_csv(data_file,index_col = None)
 df = data.sample( frac = 1).reset_index(drop=True)
 data = pd.DataFrame( min_max_scaler.fit_transform(df), columns = df.columns, index = df.index)
 
+data.to_csv('../data/crossvalid.csv', index = False)
 #Splitting the Data (80-10-10)
 tot_n = data.shape[0]/2
 win_df = data[data['Winner'] == 1]
